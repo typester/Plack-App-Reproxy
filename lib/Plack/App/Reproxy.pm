@@ -109,8 +109,11 @@ Plack::App::Reproxy - Module abstract (<= 44 characters) goes here
 
 =head1 SYNOPSIS
 
-  use Plack::App::Reproxy;
-  blah blah blah
+    # app.psgi
+    use Plack::App::Reproxy;
+    my $app = Plack::App::FCGIDispatcher->new({
+        backend => 'http://127.0.0.1:5001',
+    })->to_app;
 
 =head1 DESCRIPTION
 
