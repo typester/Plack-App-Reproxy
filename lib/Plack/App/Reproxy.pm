@@ -61,6 +61,10 @@ sub call {
                         $proxy_content  = $body;
                         $proxy_callback = $hdr->{'x-reproxy-callback'};
 
+                        if ($proxy_callback =~ m!^/!) {
+                            $proxy_callback = $self->backend . $proxy_callback;
+                        }
+
                         my $t; $t = AnyEvent->timer(
                             after => 0,
                             cb    => sub {
