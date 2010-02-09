@@ -55,7 +55,8 @@ sub call {
                         $proxy_uri    = $hdr->{'x-reproxy-url'};
                         $proxy_headers = {};
                         for my $h (grep /^x-reproxy-header-/, keys %$hdr) {
-                            $proxy_headers->{$h} = $hdr->{$h};
+                            (my $n = $h) =~ s/^x-reproxy-header-//;
+                            $proxy_headers->{$n} = $hdr->{$h};
                         }
                         $proxy_content  = $body;
                         $proxy_callback = $hdr->{'x-reproxy-callback'};
