@@ -79,7 +79,7 @@ sub call {
                         $proxy_headers = {
                             %$hdr,
                             Host => $headers{host},
-                            'X-Reproxy-Original-URL' => $uri,
+                            'X-Reproxy-Original-URL' => $req->uri,
                         };
                         $proxy_content = $body;
                         undef $proxy_callback;
