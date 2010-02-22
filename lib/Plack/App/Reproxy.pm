@@ -18,7 +18,7 @@ sub call {
     my $res = AE::cv;
 
     my $uri     = URI->new( $self->backend . $req->uri->path_query );
-    my %headers = map { $_ => $req->header($_) } $req->headers->header_field_names;
+    my %headers = map { lc $_ => $req->header($_) } $req->headers->header_field_names;
 
     my $proxy_method  = $req->method;
     my $proxy_uri     = $uri;
@@ -76,7 +76,11 @@ sub call {
                     elsif ($proxy_callback) {
                         $proxy_method = 'POST';
                         $proxy_uri    = $proxy_callback;
-                        $proxy_headers = $hdr;
+                        $proxy_headers = {
+                            %$hdr,
+                            Host => $headers{host},
+                            'X-Reproxy-Original-URL' => $uri,
+                        };
                         $proxy_content = $body;
                         undef $proxy_callback;
 
